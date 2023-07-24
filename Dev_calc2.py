@@ -75,7 +75,7 @@ class Coord(Canvas):
             if i > self.y0 * 2:
                 break
     def my_delete(self):
-            for i in self.my_delete:
+            for i in self.my_id:
                 self.delete(i)
             
 if __name__ == '__main__':
