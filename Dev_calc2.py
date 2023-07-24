@@ -56,59 +56,32 @@ class Coord(Canvas):
         )
     
     def equation_2(self, a, b, c):
-        delta = b**2 - 4 * a * c
-        if delta > 0:
-            self.e2x1 = x1 = (-b - sqrt(delta)) / 2 * a
-            self.e2x2 = x2 = (-b + sqrt(delta)) / 2 * a
-            y1 = 0
-            y2 = 0
-            x00 = -b / 2 * a
-            y00 = a * x00**2 + b*x00 + c
-            self.my_id.append(
-                    self.create_line(self.x0 - x00 * 20, self.y0 - y00 * 20, 
-                                     self.x0 - (x1-1) * 20, self.y0 - (y1-1) * 20)
-            )
-            self.my_id.append(
-                    self.create_line(self.x0 - x00 * 20, self.y0 - y00 * 20,
-                                     self.x0 - x2 * 20, self.y0 - y2 * 20)
-            )
-        elif delta == 0:
-            self.e2x0 = x00 = -b / 2 * a
-            sty = a * x00**2 + b*x00 + c
-            sty2 = a * (x00 + 0.5) ** 2 + b*(x00+0.5) + c
-            self.my_id.append(
-                self.create_line(self.x0 - x00 * 20, self.y0 -sty * 20, 
-                                 self.x0 -(x00 + 1)  * 20, self.y0 - sty2 * 20)
-            )
-            self.my_id.append(
-                self.create_line(self.x0 + x00 * 20, self.y0 -sty * 20,
-                                 self.x0 + (x00 + 1) * 20, self.y0 - sty2 * 20)
-            )
-
-        else:
-            raise Exception('Can not solve equation in |R')
-        i = 0
+        self.x00 = -b/2*a
+        i = self.x00
+        j = self.x0
         while True:
-            i = (i + 0.5)
             yn1 = self.y0 - (a*i**2 + i*b + c) * 20
-            yn2 = self.y0 - (a*(i+1)**2 + (i+1)*b + c) * 20
+            yn2 = self.y0 - (a*(i+0.5)**2 + (i+0.5)*b + c) * 20
+            yn3 = self.y0 - (a*j**2 + j*b + c) * 20
+            yn4 = self.y0 - (a*(j-0.5)**2 + (j-0.5)*b + c) * 20
             self.my_id.append(
-                    self.create_line(self.x0 - i * 20, yn1, self.x0 - (i+1) * 20, yn2)
+                    self.create_line(self.x0 + i * 20, yn1, self.x0 + (i+0.5) * 20, yn2)
             )
             self.my_id.append(
-                    self.create_line(self.x0 + i * 20, yn1, self.x0 + (i+1) * 20, yn2)
+                    self.create_line(self.x0 + j * 20, yn3, self.x0 + (j-0.5) * 20, yn4)
             )
-
-            if i >= 2 * self.x0:
+            j = j - 0.5
+            i = i + 0.5
+            if i > self.y0 * 2:
                 break
     def my_delete(self):
-        for i in self.my_id:
-            self.delete(i)
-
-
-if __name__ == "__main__":
+            for i in self.my_id:
+                self.delete(i)
+            
+if __name__ == '__main__':
     root = Tk()
-    c = Coord(height = 500, width = 500, bg="ivory")
-    c.pack()
-    c.equation_2(2,-8, -1)
+    root.title('Dev calc')
+    coord = Coord(root, width = 500, height = 500, bg = 'ivory')
+    coord.pack()
+    coord.equation_2(-1, 3, 0)
     root.mainloop()
