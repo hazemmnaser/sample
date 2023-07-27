@@ -1,0 +1,113 @@
+#!/data/data/com.termux/files/usr/bin/python3
+
+from Dev_calc import *
+from locale   import atof
+def top1():
+    f1 = func1( atof( enm.get() ), atof( enp.get() ) )
+    root2 = Toplevel(root)
+    root2.title('Result')
+    Label(root2, text = 'The Paint of ' + f1.std_form, font = 'Arial 10 bold')\
+            .grid(row = 1, column = 1, columnspan = 3)
+    # For drawing
+    coord = Coord(root2, height = 500, width = 500, bg = 'ivory')
+    coord.grid(row = 2, column = 1, rowspan = 4)
+    coord.equation_1(f1.m, f1.p)
+    # For derivative
+    Label(root2, text = 'The derivative function of ' + f1.std_form + ' ', font = 'Arial 10 bold')\
+            .grid(row = 2, column = 2)
+    Label(root2, text = derivative(f1), font = 'Arial 7 italic').grid(row = 2, column = 3)
+    # For unlimited integral
+    Label(root2, text = 'The unlimited integral of function ' + f1.std_form + ' ', font = 'Arial 10 bold')\
+            .grid(row = 3, column = 2)
+    Label(root2, text = integral(f1), font = 'Arial 7 italic')\
+            .grid(row = 3, column = 3)
+    # For showing root
+    Label(root2, text = 'The roots of function ' + f1.std_form + ' ', font = 'Arial 10 bold')\
+            .grid(row = 4, column = 2)
+    Label(root2, text = str( roots(f1) ), font = 'Arial 7 italic')\
+            .grid(row = 4, column = 3)
+    root2.mainloop()
+
+def top2():
+    root2 = Toplevel()
+    root2.title('Result')
+
+    try:
+        f2 = func2(atof( ena.get() ), atof( enb.get() ), atof( enc.get() ))
+    except FeatureWarning as fw:
+        error.configure(text = 'Sorry, but ' + fw.msg)
+        root2.destroy()
+    except:
+        error.configure(text = 'Please enter a correct arguments!', fg = 'red')
+        root2.destroy()
+    
+    # For draw
+    Label(root2, text = 'The paint of function ' + f2.std_form, font = 'Arial 10 bold')\
+            .grid(row = 1, column = 1, columnspan = 3)
+    coord = Coord(root2, height = 500, width = 500, bg = 'ivory')
+    coord.grid(row = 2, column = 1, rowspan = 7)
+    try:
+        coord.equation_2(f2.a, f2.b, f2.c)
+    except:
+        error.configure(text = 'Please enter a correct arguments.', fg = 'red')
+        root2.destroy()
+    # For derivative
+    Label(root2, text = 'The derivative of function ' + f2.std_form + ' ', font = 'Arial 10 bold')\
+            .grid(row = 2, column = 2)
+    Label(root2, text = derivative(f2), font = 'Arial 7 italic')\
+            .grid(row = 3, column = 2)
+    # For unlimited integral
+    Label(root2, text = 'The unlimited integral of function ' + f2.std_form, font = 'Arial 10 bold')\
+            .grid(row = 4, column = 2)
+    Label(root2, text = integral(f2), font = 'Arial 7 italic')\
+            .grid(row = 5, column = 2)
+    # For roots
+    Label(root2, text = 'The roots of function ' + f2.std_form + ' ', font = 'Arial 10 bold')\
+            .grid(row = 6, column = 2)
+    if ( type( f2.roots ) == float or type( f2.roots) == int):
+        Label(root2, text = str( roots(f2) ), font = 'Arial 7 italic')\
+                .grid(row = 7, column = 2)
+    elif ( type( f2.roots ) == dict ):
+        Label(root2, text = 'x1 = ' + str(f2.roots['x1']) + ' x2 = ' + str(f2.roots['x2']), font = 'Arial 7 italic')\
+                .grid(row = 7, column = 2)
+    else:
+        Label(root2, text = 'no roots!', font = 'Arial 7 italic')\
+                .grid(row = 7, column = 2)
+    root2.mainloop()
+
+root = Tk()
+root.title('Dev calc')
+logo = PhotoImage(file = './devlogo.png')
+root.iconphoto(True, logo)
+
+Label(root, text = 'equations from deg 1', font = 'Arial 14 bold')\
+        .grid(row = 1, column = 1)
+# for deg 1
+Label(root, text = 'Enter m and p arguments: ').grid(row = 2, column = 1)
+
+enm = Entry(root, font = 'Arial 7 italic')
+enp = Entry(root, font = 'Arial 7 italic')
+enm.grid(row = 2, column = 2)
+enp.grid(row = 2, column = 3)
+bu1 = Button(root, text = 'Studying', command = top1)
+bu1.grid(row = 3, column = 1)
+
+Label(root, text = 'equation from deg 2', font = 'Arial 14 bold')\
+        .grid(row = 4, column = 1)
+# for deg 2
+Label(root, text = 'Enter a, b and c arguments: ')\
+        .grid(row = 5, column = 1)
+
+ena = Entry(root, font = 'Arial 7 italic')
+enb = Entry(root, font = 'Arial 7 italic')
+enc = Entry(root, font = 'Arial 7 italic')
+ena.grid(row = 5, column = 2)
+enb.grid(row = 5, column = 3)
+enc.grid(row = 5, column = 4)
+bu2 = Button(root, text = 'Studying', command = top2)
+bu2.grid(row = 6, column = 1)
+
+error = Label(root, text = '', font = 'Arial 14 bold', fg = 'black')
+error.grid(row = 7, column = 1)
+
+root.mainloop()

@@ -1,6 +1,7 @@
 from tkinter import *
 from random import random
 from math import *
+from eq_api import *
 
 class Coord(Canvas):
     """
@@ -40,7 +41,7 @@ class Coord(Canvas):
 
     def equation_1(self, m, p):
         """
-        Draw equation from one degrees on Coord object
+        Draw equation from one degrees on "Coord" object
         """
         # The resolve of fraction in zero
         y = self.y0 - 0
@@ -56,14 +57,16 @@ class Coord(Canvas):
         )
     
     def equation_2(self, a, b, c):
+        """Draw The function from two degrees on "Coord" object"""
         self.x00 = -b/2*a
         i = self.x00
         j = self.x0
+        f2 = func2(a, b, c)
         while True:
-            yn1 = self.y0 - (a*i**2 + i*b + c) * 20
-            yn2 = self.y0 - (a*(i+0.5)**2 + (i+0.5)*b + c) * 20
-            yn3 = self.y0 - (a*j**2 + j*b + c) * 20
-            yn4 = self.y0 - (a*(j-0.5)**2 + (j-0.5)*b + c) * 20
+            yn1 = self.y0 - f2.eq2(i) * 20
+            yn2 = self.y0 - f2.eq2(i + 0.5) * 20
+            yn3 = self.y0 - f2.eq2(j) * 20
+            yn4 = self.y0 - f2.eq2(j - 0.5) * 20
             self.my_id.append(
                     self.create_line(self.x0 + i * 20, yn1, self.x0 + (i+0.5) * 20, yn2)
             )
