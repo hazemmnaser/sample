@@ -1,3 +1,9 @@
+# Copyright (c) 2023 hazemmnaser                                                 # All rights reserved
+# By depend on free software rights, you have freedom to do anything;
+# However, you must include the copyright of the original software owner.
+# This project is licensed under the GPLv2 license, for more informations,
+# read the <<LICENSE>> file
+
 import math as mh
 
 # This error has raised when found unlogic expression
